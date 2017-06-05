@@ -1,4 +1,4 @@
-﻿/**
+/**
 
  @Name：layer v3.0.3 Web弹层组件
  @Author：贤心
@@ -7,7 +7,8 @@
     
  */
 
-;!function(window, undefined){
+require('./skin/default/layer.css');
+!function(window, undefined){
 "use strict";
 
 var isLayui = window.layui && layui.define, $, win, ready = {
@@ -45,47 +46,10 @@ var layer = {
     
     if(!options.extend) return this;
     
-    isLayui 
-      ? layui.addcss('modules/layer/' + options.extend)
-    : layer.link('skin/' + options.extend);
-    
     return this;
   },
   
-  //载入CSS配件
-  link: function(href, fn, cssname){
-    
-    //未设置路径，则不主动加载css
-    if(!layer.path) return;
-    
-    var head = $('head')[0], link = document.createElement('link');
-    if(typeof fn === 'string') cssname = fn;
-    var app = (cssname || href).replace(/\.|\//g, '');
-    var id = 'layuicss-'+app, timeout = 0;
-    
-    link.rel = 'stylesheet';
-    link.href = layer.path + href;
-    link.id = id;
-    
-    if(!$('#'+ id)[0]){
-      head.appendChild(link);
-    }
-    
-    if(typeof fn !== 'function') return;
-    
-    //轮询css是否加载完毕
-    (function poll() {
-      if(++timeout > 8 * 1000 / 100){
-        return window.console && console.error('layer.css: Invalid');
-      };
-      parseInt($('#'+id).css('width')) === 1989 ? fn() : setTimeout(poll, 100);
-    }());
-  },
-  
   ready: function(callback){
-    var cssname = 'skinlayercss', ver = '303';
-    isLayui ? layui.addcss('modules/layer/default/layer.css?v='+layer.v+ver, callback, cssname)
-    : layer.link('skin/default/layer.css?v='+layer.v+ver, callback, cssname);
     return this;
   },
   
